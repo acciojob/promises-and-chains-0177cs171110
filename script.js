@@ -1,4 +1,3 @@
-//your JS code here. If required.
 document.addEventListener("DOMContentLoaded", () => {
   const userForm = document.getElementById("userForm");
 
@@ -11,17 +10,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const age = parseInt(ageInput.value, 10);
     const name = nameInput.value.trim();
 
-    if (!age || isNaN(age) || age <= 0 || !name) {
-      alert("Please enter valid age and name.");
+    if (!name) {
+      alert("Please enter a valid name.");
       return;
     }
 
-    const result = await checkAge(age, name);
-    if (result === "above18") {
-      alert(`Welcome, ${name}. You can vote.`);
-    } else {
+    if (!age || isNaN(age) || age < 1) {
+      alert("Please enter a valid age (a positive number).");
+      return;
+    }
+
+    try {
+      const result = await checkAge(age, name);
+      if (result === "above18") {
+        alert(`Welcome, ${name}. You can vote.`);
+      } else {
+        alert(`Oh sorry ${name}. You aren't old enough.`);
+      }
+    } catch (error) {
+      console.error(error);
       alert(`Oh sorry ${name}. You aren't old enough.`);
     }
+
+    // Reset the form after submission
+    userForm.reset();
   });
 
   function checkAge(age, name) {
@@ -36,4 +48,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
